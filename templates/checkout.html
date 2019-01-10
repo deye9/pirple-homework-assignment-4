@@ -1,0 +1,62 @@
+<script src="https://checkout.stripe.com/checkout.js"></script>
+
+<h2>Please click the button below to pay your order.</h2>
+<center>
+  <form id="checkoutStripe" action="/api/checkout" method="POST">
+
+    <input type="hidden" id="orderId" value="{orderId}" />
+    <input type="hidden" id="userId" value="{userId}" />
+
+    <button type="submit" id="payWithStripe" class="cta green">Pay Order</button>
+  </form>
+</center>
+
+
+<script>
+var handler = StripeCheckout.configure({
+  key: '{data_key}',
+  image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+  locale: 'auto',
+  token: function(token) {
+
+    var orderId = document.querySelector("#checkoutStripe #orderId").value;
+    var userId = document.querySelector("#checkoutStripe #userId").value;
+
+    const payload = {
+      'orderId': orderId,
+      'stripeToken': token.id,
+      'userId': userId
+    }
+
+
+    app.client.request(undefined,'api/checkout','POST',undefined,payload,function(statusCode,responsePayload){
+      if(statusCode == 200){
+        window.location = '/checkout/success';
+      } else {
+        window.location = '/checkout/error';
+      }
+    });
+  }
+});
+
+document.getElementById('payWithStripe').addEventListener('click', function(e) {
+  // Open Checkout with further options:
+
+  var dataAmount = `{data_amount}`;
+  var name = `{name}`;
+  var order = `{order}`;
+
+  handler.open({
+    name: name,
+    description: order,
+    currency: 'rand',
+    amount: dataAmount
+  });
+  e.preventDefault();
+});
+
+// Close Checkout on page navigation:
+window.addEventListener('popstate', function() {
+  handler.close();
+});
+</script>

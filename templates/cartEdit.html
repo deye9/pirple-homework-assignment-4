@@ -1,0 +1,32 @@
+<h1>Your shopping cart list</h1>
+<hr />
+
+<table id="itemsListTable">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Details</th>
+      <th>Operation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id="noItemsOnShoppingCartMessage">
+      <td colspan="5">You have no items on shopping cart, add to shopping cart from the menu!</td>
+    </tr>
+  </tbody>
+</table>
+
+<div id="moveToMenuCTA" class="ctaWrapper">
+  <a class="cta green" href="/menu">Go to Menu</a>
+</div>
+
+
+<div id="totalAmountCTA" class="ctaWrapper">
+  <form id="cartOrder" action="/api/order" method="POST">
+    <span id="shoppingCartTotal"></span>
+    <button type="submit" class="cta green">Order & Checkout</button>
+    <div class="formError"></div>
+    <input class="hiddenUserIdInput" type="hidden" name="userid" />
+  </form>
+</div>
